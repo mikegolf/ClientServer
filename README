@@ -3,5 +3,14 @@ Client Server communications learning project
 
 Initially started from echoing a text message from a client, taken from Microsoft sample projects. Multiple clients possible. Modified to allow server also to send a message to client. Handling a single client at the moment. Only sending text.
 
-19/07/14 : Being modified for multiple clients to be able to establish two-way communication with each other and the server to facilitate the clients' identification and life cycle.
+19/07/14
+========
+Being modified for multiple clients to be able to establish two-way communication with each other and the server to facilitate the clients' identification and life cycle.
 
+20/07/14
+========
+Multiple clients can now connect to each other via the server. The ClientManage class stores the clients references, identifying each client by an integer. 
+
+Message from client to the server to be formatted with the first 3 characters containing a 3 digit number identifying message destination. The id 999 to be reserved for messages to the server, and 1-998 to be used for similar clients. Rest of the message (up to a maximum length of 253 characters) to contain the message. As of now, there is one particular message directed to the server to request the identification of the connected client, to which the server responds with the client id stored when the client first connected. Messages intended to other clients are redirected to them by the server.
+
+Next step: GUI improvements to client to have different controls to select destination client, edit message and display message. GUI improvements to server to display connected clients. Improvements to server to recycle client indices.
