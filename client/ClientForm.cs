@@ -15,6 +15,7 @@ namespace Client
 {
     public partial class ClientForm : Form
     {
+        //private int myIndex;
         private string myMessage = "";
         private TcpClient client = new TcpClient();
         NetworkStream clientStream;
@@ -29,12 +30,27 @@ namespace Client
             client.Connect(serverEndPoint);
             
             clientStream = client.GetStream();
-            //Run_client();
 
             Thread client_thread = new Thread(new ThreadStart(Run_client));
             client_thread.Start();
+
+            RequestClientId();
         }
 
+        private void Client_Quit(Object sender, System.Windows.Forms.FormClosedEventArgs e)
+        {
+            //this.clientStream.Close();
+            //this.client.Close();
+            Application.Exit();
+        }
+
+        private void RequestClientId()
+        {
+            myMessage = "999GetClientId";
+            SendMessage(myMessage);
+            myMessage = "";
+        }
+        
         private void Run_client()
         {
             byte[] data = new byte[256];
@@ -52,24 +68,13 @@ namespace Client
 
                     if (responseData != String.Empty)
                     {
-                        WriteMessage(Environment.NewLine + "Message From Server : " + responseData);
+                        WriteMessage(responseData);
                     }
 
                     //clientStream.Flush();
 
                 } while (clientStream.DataAvailable);
             }
-        }
-
-        private void AsyncWriteMessage(IAsyncResult result)
-        {
-            string data = (string) result.AsyncState;
-            WriteMessage(Environment.NewLine + "Message From Server : " + data);
-        }
-
-        private void rtbClient_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void rtbClient_KeyDown(object sender, KeyEventArgs e)
@@ -93,25 +98,6 @@ namespace Client
 
             clientStream.Write(buffer, 0, buffer.Length);
             clientStream.Flush();
-
-            //// Receive the TcpServer response
-            //// Buffer to store the response bytes
-            //byte[] data = new byte[256];
-
-            //if (clientStream.DataAvailable)
-            //{
-            //    Array.Clear(data, 0, 256);
-            //    // String to store the response ASCII representation
-            //    String responseData = String.Empty;
-
-            //    // Read the TCP server response
-            //    int bytecount = clientStream.Read(data, 0, data.Length);
-            //    responseData = encoder.GetString(data);
-
-            //    WriteMessage(Environment.NewLine + "Response from server : " + responseData);
-
-            //    //rtbClient.AppendText(Environment.NewLine + "From Server : " + responseData);
-            //}
         }
 
         private void WriteMessage(string msg)

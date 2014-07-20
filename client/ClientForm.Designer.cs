@@ -51,6 +51,7 @@
             this.Text = "Client";
             this.ResumeLayout(false);
 
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Client_Quit);
         }
 
         #endregion
