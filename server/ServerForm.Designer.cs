@@ -60,9 +60,11 @@
             // 
             // rtbServer
             // 
+            this.rtbServer.BackColor = System.Drawing.SystemColors.Window;
             this.rtbServer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbServer.Location = new System.Drawing.Point(0, 0);
             this.rtbServer.Name = "rtbServer";
+            this.rtbServer.ReadOnly = true;
             this.rtbServer.Size = new System.Drawing.Size(292, 251);
             this.rtbServer.TabIndex = 1;
             this.rtbServer.Text = "";
@@ -77,12 +79,12 @@
             this.Controls.Add(this.statusStrip1);
             this.Name = "ServerForm";
             this.Text = "Server";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Server_Quit);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Server_Quit);
         }
 
         #endregion

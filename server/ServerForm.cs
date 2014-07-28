@@ -17,7 +17,6 @@ namespace Server
         private TcpListener tcpListener;
         private Thread listenThread;
         private ASCIIEncoding serverEncoder;
-        //private TcpClient myclient; // Assuming single client for testing 2-way comms
         private int connectedClients = 0;
         private string serverMessage = "";
         private ClientManager clientsTable;
@@ -55,7 +54,6 @@ namespace Server
                 TcpClient client = this.tcpListener.AcceptTcpClient();
 
                 int index = clientsTable.Register_Client(client);
-                //InformClientIndex(client, index);
 
                 // Create an individual thread to handle comms with a connected client
                 connectedClients++;
@@ -107,16 +105,18 @@ namespace Server
                     }
 
                     // convert the received bytes to a string and display on server's screen
-                    string msg = serverEncoder.GetString(message, 0, bytesRead);
-                    WriteMessage(msg);
-                    HandleMessage(message, tcpClient);
+                    //string msg = serverEncoder.GetString(message, 0, bytesRead);
+                    //WriteMessage(msg);
+                    
 
                     // Echo the message back to the client
                     //Echo(msg, serverEncoder, clientStream);
+
+                    // Handle the message appropriately7
+                    HandleMessage(message, tcpClient);
                 }
             }
             tcpClient.Close();
-            //myclient.Close();
         }
 
         private void HandleMessage(byte[] message, TcpClient origin)
@@ -126,6 +126,8 @@ namespace Server
             string response = "";
             TcpClient dest = origin;
             int index = clientsTable.Retrieve_Index(origin);
+
+            string rtbString = "";
 
             try
             {
@@ -139,24 +141,27 @@ namespace Server
                     // TODO Improve upon .contains check
                     if (msg.Contains("GetClientId"))
                     {
-                        response = "You are client # " + index;
+                        response = "999SetClientId" + index;
+                        rtbString = "Client #" + index + " connected, requested id.";
                     }
                 }
                 else
                 {
                     // Handle communication requests to other clients
-                    response = "Client # " + index + " : " + msg;
+                    response = id.ToString().PadLeft(3, '0') + "Client #" + index + " : " + msg;
                     dest = clientsTable.Retrieve_Client(id);
+                    rtbString = "Client #" + index + " >> " + "Client #" + id + " : " + msg;
                 }
 
                 if (dest != null && dest.Connected == true)
                 {
+                    WriteMessage(rtbString);
                     SendMessage(response, dest.GetStream());
                 }
             }
             catch (System.FormatException)
             {
-                // Handle invalid client id or exception
+                // TODO: Handle invalid client id or exception
 
             }
         }
@@ -170,27 +175,16 @@ namespace Server
             }
             else
             {
-                this.rtbServer.AppendText(msg + Environment.NewLine);
+                this.rtbServer.AppendText(msg);
+                this.rtbServer.AppendText(Environment.NewLine);
             }
         }
 
         private void rtbServer_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (myclient != null && myclient.Connected == true)
-            //{
-            //    NetworkStream clientStream = myclient.GetStream();
-
-            //    if (e.KeyData != Keys.Enter || e.KeyData != Keys.Return)
-            //    {
-            //        serverMessage += (char)e.KeyValue;
-            //    }
-            //    else
-            //    {
-            //        SendMessage(serverMessage, clientStream);
-            //        serverMessage = "";
-            //    }
-            //}
+            // TODO : Use other way to make server type messages to client
         }
+
         /// <summary>
         /// Echo the message back to the sending client
         /// </summary>
@@ -219,16 +213,6 @@ namespace Server
             byte[] buffer = serverEncoder.GetBytes(msg);
             clientStream.Write(buffer, 0, buffer.Length);
             clientStream.Flush();
-        }
-
-        private void InformClientIndex(TcpClient client, int index)
-        {
-            string message = "You are client number " + Convert.ToString(index);
-
-            if (client != null && client.Connected == true)
-            {
-                SendMessage(message, client.GetStream());
-            }
         }
     }
 }
