@@ -1,8 +1,7 @@
 Client Server communications learning project
 =============================================
 
-Initially started from echoing a text message from a client, taken from Microsoft sample projects. Multiple clients possible. Modified to allow server also to send a message to client. Handling a single client at the moment. Only sending text.
-Target is to enable multiple clients (C++ console app, android app) to be able to connect and communicate.
+Initially started from echoing a text message from a client, taken from Microsoft sample projects. Multiple clients possible. Modified to allow server also to send a message to client. Handling a single client at the moment. Only sending text. Target is to enable multiple clients (C++ console app using winsock, Cpp boost::asio app, android app) to be able to connect and communicate.
 
 19/07/14
 ========
@@ -14,5 +13,29 @@ Multiple clients can now connect to each other via the server. The ClientManage 
 
 Message from client to the server to be formatted with the first 3 characters containing a 3 digit number identifying message destination. The id 999 to be reserved for messages to the server, and 1-998 to be used for similar clients. Rest of the message (up to a maximum length of 253 characters) to contain the message. As of now, there is one particular message directed to the server to request the identification of the connected client, to which the server responds with the client id stored when the client first connected. Messages intended to other clients are redirected to them by the server.
 
-Next step: GUI improvements to client to have different controls to select destination client, edit message and display message. GUI improvements to server to display connected clients. Improvements to server to recycle client indices.
-Make clients select server to connect to instead of automatically connecting to loopback
+
+28/07/14
+========
+GUI changes:
+Client has different text boxes to enter destination client id and message. The main textbox is now a readonly field displaying the messages sent and received. Client also displays self client id and server ip which it is connected to.
+
+Server's textbox is now readonly and server can not send text messages to clients as before.
+
+Application changes:
+- Server has a specific message to respond with client id.
+- Id 999 used for server/configuration messages towards clients also.
+- Changes to message handling at client.
+- Code cleanup.
+
+
+Next steps: 
+- GUI improvements to server to display connected clients and send a list to connected clients. Clients to be able to select other connected clients instead of having to input a text id. 
+- Improvements to server to recycle client indices.
+- Error, exception handling.
+- Separate Utils project creation for encoding utilities.
+- Cpp console client using winsock.
+- Cpp console client using Boost::asio.
+- Messages backup in MS SQL database.
+- Android app.
+- Communicate using serialised objects.
+- Design diagram.
