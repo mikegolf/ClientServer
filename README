@@ -1,7 +1,8 @@
 Client Server communications learning project
 =============================================
 
-Initially started from echoing a text message from a client, taken from Microsoft sample projects. Multiple clients possible. Modified to allow server also to send a message to client. Handling a single client at the moment. Only sending text. Target is to enable multiple clients (C++ console app using winsock, Cpp boost::asio app, android app) to be able to connect and communicate.
+Initially started from a server echoing a text message from a client, taken from Microsoft sample projects, modified to allow server to send a message to client. Now handling multiple clients communicating with each other via the server. Target is to enable multiple clients (C++ console app using winsock, Cpp boost::asio app, android app, web plugin) to be able to connect and communicate using the same server.
+
 
 19/07/14
 ========
@@ -27,13 +28,21 @@ Application changes:
 - Changes to message handling at client.
 - Code cleanup.
 
+03/08/14
+========
+Added C++ Windows Console client which connects to the server using a wrapper class to communicate using Winsock on windows platforms.
+The console client connects to the server, requests an id and starts listening to incoming messages.
+
+=======================================================================================
 
 Next steps: 
+===========
+
+- Make c++ console client handle signal to interrupt and let user type and send a message.
 - GUI improvements to server to display connected clients and send a list to connected clients. Clients to be able to select other connected clients instead of having to input a text id. 
 - Improvements to server to recycle client indices.
 - Error, exception handling.
 - Separate Utils project creation for encoding utilities.
-- Cpp console client using winsock.
 - Cpp console client using Boost::asio.
 - Messages backup in MS SQL database.
 - Android app.
